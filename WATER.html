@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <title>Document</title>
+    <style>
+    circleCell{
+        width:300px; 
+        height:300px; 
+        position: static;
+        display: inline-block;
+    }
+    img {
+    display: block;
+    margin-left: 50;
+    margin-right: 20;
+    width: 30%;
+  }
+    h1{
+    color: rgb(22, 5, 85);
+    font-family:courier ;
+    font-size :200%;
+text-align:center;
+ }
+        table{
+			width:900px;
+			margin:auto;
+			table-layout:fixed;
+			text-align:center;
+			margin-top:50px;
+			font-family:Arial;
+		}
+		table, th, td{
+		border:2px dotted white;
+		border-collapse:collapse;
+		padding:20px;
+		font-size:20px;
+		}
+		th{
+			background:black;
+			padding:30px;
+			font-style:bold;
+			color:#ffff;
+		}
+		td:nth-child(5n+1){
+			background:black;
+			color:#ffff;
+		}
+		td:nth-child(5n+2){
+			background:blue;
+		}
+		td:nth-child(5n+3){
+			background:green;
+		}
+		td:nth-child(5n+4){
+			background:yellow;
+		}
+      </style>
+    
+    
+    </style>
+</head>
+<body style= "background:url(https://images.theconversation.com/files/223729/original/file-20180619-126566-1jxjod2.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=1200&h=900.0&fit=crop)">
+    <h1>MOISTURE CONTENT</h1>
+    
+     
+    <form>
+        <input type="file">
+        <input type="button" onClick="myFunction()">
+        </form>
+        
+    <canvas id="circleCell" width="3" height="3"></canvas>
+    <canvas id="circleAlpha" width="3" height="3"></canvas>
+    <canvas id="circleBlur" width="600" height="600"></canvas>
+    <canvas id="circleHeat" width="600" height="600"></canvas>
+    
+    <div id="heatmapjsDefDetailed" class="heatmapjs"></div>
+    <div id="heatmapjsDefGray" class="heatmapjs"></div>
+    <div id="heatmapjsDefUndetailed" class="heatmapjs" ></div>
+     
+    
+    <div id="heatmapjsImpDetailed" class="heatmapjs"></div>
+    <div id="heatmapjsImpGray" class="heatmapjs"></div>
+    <div id="heatmapjsImpUndetailed" class="heatmapjs" ></div>
+    <img src ="field.jpeg" width="350" >
+    <h1>MOISTURE Table</h1>
+    <table>
+        <tr>
+           <th>Soil Type</th>
+           <th>No Irrigation Needed</th>
+           <th>Irrigation to Be Applied</th>
+           <th>Dangerously Low Soil Moisture</th>
+        </tr>
+        <tr>
+           <td>Fine (Clay)</td>
+           <td>80-100%</td>
+           <td>60-80%</td>
+           <td>Below 60%</td>
+           </tr>
+        <tr>
+           <td>Medium (Loamy)</td>
+           <td>88-100%</td>
+           <td>70-88%</td>
+           <td>Below 70%</td>
+        </tr>
+        <tr>
+           <td>Coarse (Sandy)</td>
+           <td>90-100%</td>
+           <td>80-90%</td>
+           <td>Below 80%</td>
+     </table>
+   
+    <script src="heatmap.js"></script>
+    <script src="StackBlur.js"></script>
+    <script >function myFunction () {
+        var CROSS_SIZE = [5, 2.5];
+        var DATA_SCALE = 1 / 5;
+        var CELL_SIZE = [DATA_SCALE * 300, DATA_SCALE * 300];
+    
+        // 
+        // Input Data
+        var maxValue = 100;
+        var cells = [
+     {x: 0, y:0, cx: DATA_SCALE *142.21140437747923, cy: DATA_SCALE *290.845288579455, v: 82.75806378732281 },
+    {x: 0, y:1, cx: DATA_SCALE *177.71400221966226, cy: DATA_SCALE *53.13714191441294, v: 98.71698016712239 },
+    {x: 0, y:2, cx: DATA_SCALE *153.39540004909358, cy: DATA_SCALE *57.79208180269643, v: 88.12158390910443 },
+    {x: 0, y:3, cx: DATA_SCALE *261.39796693462233, cy: DATA_SCALE *90.59907839643611, v: 88.44715501146449 },
+    {x: 0, y:4, cx: DATA_SCALE *147.0436234390609, cy: DATA_SCALE *273.7868111211012, v: 93.94346731772612 },
+    {x: 0, y:5, cx: DATA_SCALE *82.09534205484773, cy: DATA_SCALE *212.46020105246282, v: 98.85487447803544 },
+    {x: 0, y:6, cx: DATA_SCALE *292.76735000958786, cy: DATA_SCALE *147.20134218889444, v: 93.28139926381746 },
+    {x: 0, y:7, cx: DATA_SCALE *131.24862002041237, cy: DATA_SCALE *63.81317525114771, v: 77.74860993726037 },
+    {x: 0, y:8, cx: DATA_SCALE *52.52090400014235, cy: DATA_SCALE *53.644575331987035, v: 91.17169789800835 },
+    {x: 0, y:9, cx: DATA_SCALE *4.725792059942346, cy: DATA_SCALE *297.3225599552415, v: 91.48420153393945 },
+    {x: 1, y:0, cx: DATA_SCALE *31.644304051817528, cy: DATA_SCALE *221.49830964968854, v: 64.24745487422818 },
+    {x: 1, y:1, cx: DATA_SCALE *13.0855395121648, cy: DATA_SCALE *232.05365689429573, v: 87.75130327579653 },
+    {x: 1, y:2, cx: DATA_SCALE *281.32592966570144, cy: DATA_SCALE *279.94614322496136, v: 94.65803475691237 },
+    {x: 1, y:3, cx: DATA_SCALE *113.2468158057327, cy: DATA_SCALE *158.22108417439844, v: 84.63341262529192 },
+    {x: 1, y:4, cx: DATA_SCALE *150.57205524591262, cy: DATA_SCALE *120.71731353804027, v: 77.89207869626324 },
+    {x: 1, y:5, cx: DATA_SCALE *116.99654907401799, cy: DATA_SCALE *168.61065390244093, v: 60.113112246156206 },
+    {x: 1, y:6, cx: DATA_SCALE *205.36019937426772, cy: DATA_SCALE *33.12411077157985, v: 65.5955849079727 },
+    {x: 1, y:7, cx: DATA_SCALE *212.60525067551615, cy: DATA_SCALE *125.64881992389985, v: 92.3307844679886 },
+    {x: 1, y:8, cx: DATA_SCALE *41.01965190860854, cy: DATA_SCALE *167.39524187012617, v: 65.58274048803358 },
+    {x: 1, y:9, cx: DATA_SCALE *157.72692102950953, cy: DATA_SCALE *54.34824293302226, v: 74.72478353557571 },
+    {x: 2, y:0, cx: DATA_SCALE *97.25428412914522, cy: DATA_SCALE *267.99655910397865, v: 73.5615501680169 },
+    {x: 2, y:1, cx: DATA_SCALE *61.123674229388506, cy: DATA_SCALE *56.2509720573627, v: 80.47295326550697 },
+    {x: 2, y:2, cx: DATA_SCALE *68.89420939098069, cy: DATA_SCALE *102.34795748485057, v: 63.115501687583524 },
+    {x: 2, y:3, cx: DATA_SCALE *90.52595882245924, cy: DATA_SCALE *27.69093461344645, v: 78.08351953559529 },
+    {x: 2, y:4, cx: DATA_SCALE *228.78841023260702, cy: DATA_SCALE *73.41361983204536, v: 67.54810510891772 },
+    {x: 2, y:5, cx: DATA_SCALE *48.62768612668079, cy: DATA_SCALE *260.93462652792897, v: 97.08679283430362 },
+    {x: 2, y:6, cx: DATA_SCALE *70.64880162668847, cy: DATA_SCALE *280.95031438647607, v: 61.53564174627809 },
+    {x: 2, y:7, cx: DATA_SCALE *49.89693343772016, cy: DATA_SCALE *171.82661449819193, v: 83.97190548615947 },
+    {x: 2, y:8, cx: DATA_SCALE *231.60735140627986, cy: DATA_SCALE *146.19348863950762, v: 71.24654662368222 },
+    {x: 2, y:9, cx: DATA_SCALE *60.192933842071916, cy: DATA_SCALE *109.32000555131752, v: 80.08401630894474 },
+    {x: 3, y:0, cx: DATA_SCALE *198.2950661417088, cy: DATA_SCALE *200.45519721439436, v: 64.64991915317131 },
+    {x: 3, y:1, cx: DATA_SCALE *208.31868613844642, cy: DATA_SCALE *226.6290546779183, v: 83.31106416736199 },
+    {x: 3, y:2, cx: DATA_SCALE *282.00024608599585, cy: DATA_SCALE *198.07643371292357, v: 82.00244645391695 },
+    {x: 3, y:3, cx: DATA_SCALE *124.36729406920479, cy: DATA_SCALE *260.68280905393175, v: 64.08441012363815 },
+    {x: 3, y:4, cx: DATA_SCALE *202.58135711697273, cy: DATA_SCALE *238.55468501816753, v: 79.6989630362667 },
+    {x: 3, y:5, cx: DATA_SCALE *161.36298245742302, cy: DATA_SCALE *145.12714422267592, v: 95.40850327224942 },
+    {x: 3, y:6, cx: DATA_SCALE *246.02767599895387, cy: DATA_SCALE *288.15591543609304, v: 65.3985797647818 },
+    {x: 3, y:7, cx: DATA_SCALE *23.14190036340825, cy: DATA_SCALE *55.42384162762327, v: 80.11020890891282 },
+    {x: 3, y:8, cx: DATA_SCALE *94.67157013543593, cy: DATA_SCALE *296.1797198722361, v: 82.07236581340084 },
+    {x: 3, y:9, cx: DATA_SCALE *188.11198308287598, cy: DATA_SCALE *24.79750325009634, v: 71.92268014471539 },
+    {x: 4, y:0, cx: DATA_SCALE *123.91509869127492, cy: DATA_SCALE *0.10140964393060559, v: 83.71149255573164 },
+    {x: 4, y:1, cx: DATA_SCALE *122.48743400517725, cy: DATA_SCALE *213.1139496442573, v: 77.93064342268644 },
+    {x: 4, y:2, cx: DATA_SCALE *155.85892485818945, cy: DATA_SCALE *53.45227623452517, v: 63.11310882065444 },
+    {x: 4, y:3, cx: DATA_SCALE *131.38571030047402, cy: DATA_SCALE *32.53098573834463, v: 87.71785692263796 },
+    {x: 4, y:4, cx: DATA_SCALE *63.39338586450085, cy: DATA_SCALE *263.4679845702692, v: 96.52662193390792 },
+    {x: 4, y:5, cx: DATA_SCALE *66.94028850782325, cy: DATA_SCALE *23.299003363603422, v: 60.562300990367376 },
+    {x: 4, y:6, cx: DATA_SCALE *72.17318899279572, cy: DATA_SCALE *166.74736414457732, v: 91.97201547483354 },
+    {x: 4, y:7, cx: DATA_SCALE *291.01988812378085, cy: DATA_SCALE *208.8231975861909, v: 99.3844033757048 },
+    {x: 4, y:8, cx: DATA_SCALE *70.55401365839303, cy: DATA_SCALE *51.49312144340124, v: 85.58592227802868 },
+    {x: 4, y:9, cx: DATA_SCALE *269.5159756357999, cy: DATA_SCALE *183.51118674205762, v: 63.90745511339081 },
+    {x: 5, y:0, cx: DATA_SCALE *156.189165829475, cy: DATA_SCALE *256.98986809145794, v: 98.13698317611173 },
+    {x: 5, y:1, cx: DATA_SCALE *225.28996652104192, cy: DATA_SCALE *81.5629987072365, v: 82.55125096007632 },
+    {x: 5, y:2, cx: DATA_SCALE *233.7980629897979, cy: DATA_SCALE *274.0117798883769, v: 83.48106589495168 },
+    {x: 5, y:3, cx: DATA_SCALE *19.145257966647833, cy: DATA_SCALE *35.31989612128711, v: 81.73911540874343 },
+    {x: 5, y:4, cx: DATA_SCALE *181.91828341083934, cy: DATA_SCALE *264.6043501873094, v: 90.6758196692393 },
+    {x: 5, y:5, cx: DATA_SCALE *210.55765721873354, cy: DATA_SCALE *42.7424695249738, v: 93.21876824070586 },
+    {x: 5, y:6, cx: DATA_SCALE *291.5950960506387, cy: DATA_SCALE *123.47614436467082, v: 67.09428997203173 },
+    {x: 5, y:7, cx: DATA_SCALE *221.87140218504396, cy: DATA_SCALE *273.76699386902993, v: 87.21809867406299 },
+    {x: 5, y:8, cx: DATA_SCALE *0.3646386126752277, cy: DATA_SCALE *74.95389189924711, v: 93.39555606123079 },
+    {x: 5, y:9, cx: DATA_SCALE *17.321664562609275, cy: DATA_SCALE *242.48592128567194, v: 96.19190174374835 },
+    {x: 6, y:0, cx: DATA_SCALE *218.02938336025747, cy: DATA_SCALE *124.54696750120677, v: 71.72806822477004 },
+    {x: 6, y:1, cx: DATA_SCALE *89.21494795542579, cy: DATA_SCALE *158.16797995422692, v: 96.85398623845487 },
+    {x: 6, y:2, cx: DATA_SCALE *223.15066152310186, cy: DATA_SCALE *249.64697842319578, v: 72.03518495664326 },
+    {x: 6, y:3, cx: DATA_SCALE *222.08495029092447, cy: DATA_SCALE *233.99463633980045, v: 65.29496100441997 },
+    {x: 6, y:4, cx: DATA_SCALE *71.49805347103181, cy: DATA_SCALE *183.32894144719455, v: 90.6538263538731 },
+    {x: 6, y:5, cx: DATA_SCALE *187.40526480336624, cy: DATA_SCALE *33.022466796844085, v: 81.2983892084813 },
+    {x: 6, y:6, cx: DATA_SCALE *59.567234666856095, cy: DATA_SCALE *33.75944664626055, v: 80.2728329189261 },
+    {x: 6, y:7, cx: DATA_SCALE *188.80613291811363, cy: DATA_SCALE *60.32854576153893, v: 85.40102458991201 },
+    {x: 6, y:8, cx: DATA_SCALE *251.43714767413204, cy: DATA_SCALE *231.05286018971944, v: 67.34898943403654 },
+    {x: 6, y:9, cx: DATA_SCALE *64.5962815731726, cy: DATA_SCALE *76.66380397059604, v: 89.58552930277703 },
+    {x: 7, y:0, cx: DATA_SCALE *68.47694697949764, cy: DATA_SCALE *246.81143825503673, v: 75.742427062273 },
+    {x: 7, y:1, cx: DATA_SCALE *21.183268581049585, cy: DATA_SCALE *209.39486979277504, v: 95.41047764857045 },
+    {x: 7, y:2, cx: DATA_SCALE *235.58840243155896, cy: DATA_SCALE *8.863020639330221, v: 83.98071029971454 },
+    {x: 7, y:3, cx: DATA_SCALE *179.72662351140158, cy: DATA_SCALE *232.28975163850671, v: 99.41166331999548 },
+    {x: 7, y:4, cx: DATA_SCALE *240.69863685620206, cy: DATA_SCALE *206.25731613086327, v: 75.41899238177652 },
+    {x: 7, y:5, cx: DATA_SCALE *207.62360223047878, cy: DATA_SCALE *177.08839494236085, v: 64.16477073807748 },
+    {x: 7, y:6, cx: DATA_SCALE *126.0813744439307, cy: DATA_SCALE *245.3485613716902, v: 99.73368921547753 },
+    {x: 7, y:7, cx: DATA_SCALE *166.35244129900616, cy: DATA_SCALE *241.15250220999715, v: 75.77148649118392 },
+    {x: 7, y:8, cx: DATA_SCALE *259.8253957868662, cy: DATA_SCALE *276.2894001526943, v: 91.64577175675481 },
+    {x: 7, y:9, cx: DATA_SCALE *54.4834076956293, cy: DATA_SCALE *270.22688164402877, v: 67.883038022865 },
+    {x: 8, y:0, cx: DATA_SCALE *16.492057144501892, cy: DATA_SCALE *236.56301072555576, v: 96.36856496494956 },
+    {x: 8, y:1, cx: DATA_SCALE *277.5740799686964, cy: DATA_SCALE *190.94828773663352, v: 73.746186672961 },
+    {x: 8, y:2, cx: DATA_SCALE *199.87762235037346, cy: DATA_SCALE *81.92447529873947, v: 95.74042600335338 },
+    {x: 8, y:3, cx: DATA_SCALE *30.017493130112783, cy: DATA_SCALE *150.74962150675964, v: 98.060798353749 },
+    {x: 8, y:4, cx: DATA_SCALE *4.051034367017525, cy: DATA_SCALE *249.50684392636694, v: 85.93641092880179 },
+    {x: 8, y:5, cx: DATA_SCALE *174.0958606336464, cy: DATA_SCALE *213.83341429387778, v: 78.4643799292254 },
+    {x: 8, y:6, cx: DATA_SCALE *206.7667578354425, cy: DATA_SCALE *278.6348555830693, v: 95.5316302186209 },
+    {x: 8, y:7, cx: DATA_SCALE *21.45843748011156, cy: DATA_SCALE *70.59617297443523, v: 72.87149524778397 },
+    {x: 8, y:8, cx: DATA_SCALE *111.31086453050382, cy: DATA_SCALE *234.40318450907483, v: 86.86392880257873 },
+    {x: 8, y:9, cx: DATA_SCALE *36.501048703271266, cy: DATA_SCALE *118.00540176239149, v: 76.23375044748963 },
+    {x: 9, y:0, cx: DATA_SCALE *277.24466556541694, cy: DATA_SCALE *121.20379444749612, v: 86.34144567805164 },
+    {x: 9, y:1, cx: DATA_SCALE *240.7510366130879, cy: DATA_SCALE *272.75669718732473, v: 92.96322045009836 },
+    {x: 9, y:2, cx: DATA_SCALE *49.84403725748769, cy: DATA_SCALE *248.57730853310574, v: 79.66302057505966 },
+    {x: 9, y:3, cx: DATA_SCALE *104.99220697195196, cy: DATA_SCALE *114.42437899797766, v: 75.56773486480755 },
+    {x: 9, y:4, cx: DATA_SCALE *93.83780697620146, cy: DATA_SCALE *232.02807270106106, v: 61.84291729835986 },
+    {x: 9, y:5, cx: DATA_SCALE *100.6979444801174, cy: DATA_SCALE *238.1843409878184, v: 74.14451044618092 },
+    {x: 9, y:6, cx: DATA_SCALE *54.929735292224414, cy: DATA_SCALE *265.3561733950709, v: 72.30744266811828 },
+    {x: 9, y:7, cx: DATA_SCALE *75.13991902573513, cy: DATA_SCALE *6.011987251786666, v: 85.30820579111796 },
+    {x: 9, y:8, cx: DATA_SCALE *297.2145616814629, cy: DATA_SCALE *28.758508026859698, v: 91.88639416258454 },
+    {x: 9, y:9, cx: DATA_SCALE *222.6279744580241, cy: DATA_SCALE *140.58454917745001, v: 64.80468229669154 }
+           
+        ];
+    
+        //
+        // Gradient Setup
+        var gradient = {
+            0.00: "rgba(255,235,205,1)",
+            0.25: "rgba(255,255,0,1)",
+            0.50: "rgba(50,205,50,1)",
+            0.75: "rgba(100,149,237,1)",
+            1.00: "rgba(0,71,171,1)"
+        };
+    
+        var gradientImage = (function () {
+            var canvas = document.createElement("canvas");
+            canvas.width = 1;
+            canvas.height = 256;
+            var ctx = canvas.getContext("2d");
+            var grad = ctx.createLinearGradient(0, 0, 1, 256);
+    
+            for (var x in gradient) {
+                grad.addColorStop(x, gradient[x]);
+            }
+    
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, 1, 256);
+    
+            return ctx.getImageData(0, 0, 1, 256).data;
+        })();
+    
+        //
+        // Heatmap Colorizer
+        function colorize(sourceCtx, destCtx, channel, width, height, alpha) {
+            var blurImageData = sourceCtx.getImageData(0, 0, width, height);
+            var blurImageDataPlain = blurImageData.data;
+    
+            for (var i = 0; i < blurImageDataPlain.length; i += 4) {
+                var gray = blurImageDataPlain[i + channel];
+    
+                var r = gradientImage[gray * 4 + 0];
+                var g = gradientImage[gray * 4 + 1];
+                var b = gradientImage[gray * 4 + 2];
+                var a = gradientImage[gray * 4 + 3];
+    
+                blurImageDataPlain[i] = r;
+                blurImageDataPlain[i + 1] = g;
+                blurImageDataPlain[i + 2] = b;
+                blurImageDataPlain[i + 3] = alpha ? a : 255;
+            }
+            destCtx.putImageData(blurImageData, 0, 0);
+        }
+    
+        //
+        // Circle Based Heatmap
+        (function (cellCanvas, alphaCanvas, blurredCanvas, heatmapCanvas) {
+    
+            cellCanvas = document.getElementById(cellCanvas);
+            alphaCanvas = document.getElementById(alphaCanvas);
+            blurredCanvas = document.getElementById(blurredCanvas);
+            heatmapCanvas = document.getElementById(heatmapCanvas);
+    
+            var cellCtx = cellCanvas.getContext('2d');
+            var alphaCtx = alphaCanvas.getContext('2d');
+            var blurCtx = blurredCanvas.getContext('2d');
+            var heatCtx = heatmapCanvas.getContext('2d');
+    
+            cellCtx.lineCap = 'round';
+            cellCtx.font = '14px Arial';
+            cellCtx.textAlign = 'center';
+            cellCtx.textBaseLine = 'bottom';
+    
+            //
+            // Fill Cells
+            for (var i = 0; i < cells.length; i++) {
+                var c = cells[i];
+                var start = { x: c.x * CELL_SIZE[0], y: c.y * CELL_SIZE[1] };
+    
+                var gray = (255 * (c.v / maxValue)) | 0;
+                var r = gradientImage[gray * 4 + 0];
+                var g = gradientImage[gray * 4 + 1];
+                var b = gradientImage[gray * 4 + 2];
+                //var a = gradientImage[gray * 4 + 3];
+    
+                // cell - border
+                cellCtx.beginPath();
+                cellCtx.moveTo(0.5 + start.x, 0.5 + start.y + CELL_SIZE[1]);
+                cellCtx.lineTo(0.5 + start.x + CELL_SIZE[0], 0.5 + start.y + CELL_SIZE[1]);
+                cellCtx.moveTo(0.5 + start.x + CELL_SIZE[0], 0.5 + start.y);
+                cellCtx.lineTo(0.5 + start.x + CELL_SIZE[0], 0.5 + start.y + CELL_SIZE[1]);
+                cellCtx.stroke();
+    
+                // cell - fill
+                cellCtx.fillStyle = 'rgb(' + r + ',' + g + ',' + b + ')';
+                cellCtx.beginPath();
+                cellCtx.arc(start.x + c.cx, start.y + c.cy, CELL_SIZE[0] / 2, 0, 2 * Math.PI, false);
+                cellCtx.fill();
+    
+                // cell - cross
+                cellCtx.beginPath();
+                cellCtx.moveTo(start.x + c.cx - CROSS_SIZE[0], start.y + c.cy - CROSS_SIZE[1]);
+                cellCtx.lineTo(start.x + c.cx + CROSS_SIZE[0], start.y + c.cy + CROSS_SIZE[1]);
+                cellCtx.moveTo(start.x + c.cx - CROSS_SIZE[0], start.y + c.cy + CROSS_SIZE[1]);
+                cellCtx.lineTo(start.x + c.cx + CROSS_SIZE[0], start.y + c.cy - CROSS_SIZE[1]);
+                cellCtx.stroke();
+    
+                // cell - value
+                cellCtx.fillStyle = '#000';
+                cellCtx.fillText(c.v, start.x + c.cx, start.y + c.cy - 5);
+    
+                // blurred - alpha circle to be blurred later
+                blurCtx.fillStyle = 'rgba( 0,0,0,' + (gray / 255) + ')';
+                blurCtx.beginPath();
+                blurCtx.arc(start.x + c.cx, start.y + c.cy, CELL_SIZE[0] / 2, 0, 2 * Math.PI, false);
+                blurCtx.fill();
+    
+                // alpha - circle
+                alphaCtx.fillStyle = 'rgba( 0,0,0,' + (gray / 255) + ')';
+                alphaCtx.beginPath();
+                alphaCtx.arc(start.x + c.cx, start.y + c.cy, CELL_SIZE[0] / 2, 0, 2 * Math.PI, false);
+                alphaCtx.fill();
+            }
+    
+            //
+            // Blur Canvas
+            stackBlurCanvasRGBA(blurredCanvas.id, 0, 0, blurredCanvas.width, blurredCanvas.height, CELL_SIZE[0] * 0.5);
+    
+            //
+            // Map Blurred canvas to heatmap
+            colorize(blurCtx, heatCtx, 3, blurredCanvas.width, blurredCanvas.height, true);
+    
+        })('circleCell', 'circleAlpha', 'circleBlur', 'circleHeat');
+    
+    
+        //
+        // Heatmap.js
+        function heatmapTest(detailedCanvas, grayscaleCanvas, undetailedCanvas, opacity, radius, blurRadius) {
+    
+            //
+            // Prepare data
+            var data = {
+                max: maxValue,
+                data: []
+            };
+            for (var i = 0; i < cells.length; i++) {
+                var c = cells[i];
+                var start = { x: c.x * CELL_SIZE[0], y: c.y * CELL_SIZE[1] };
+                data.data.push({ x: start.x + c.cx, y: start.y + c.cy, count: c.v });
+            }
+    
+            //
+            // Detailed Canvas
+    
+            var detailedHeatmap = h337.create({
+                element: document.getElementById(detailedCanvas),
+                gradient: gradient,
+                opacity: opacity,
+                radius: radius,
+                blurRadius: blurRadius,
+                debug: true
+            });
+    
+            var context = detailedHeatmap.get('ctx');
+            detailedHeatmap.store.setDataSet(data);
+            for (var i = 0; i < cells.length; i++) {
+                var c = cells[i];
+                var start = { x: c.x * CELL_SIZE[0], y: c.y * CELL_SIZE[1] };
+                // border
+                context.beginPath();
+                context.moveTo(0.5 + start.x, 0.5 + start.y + CELL_SIZE[1]);
+                context.lineTo(0.5 + start.x + CELL_SIZE[0], 0.5 + start.y + CELL_SIZE[1]);
+                context.moveTo(0.5 + start.x + CELL_SIZE[0], 0.5 + start.y);
+                context.lineTo(0.5 + start.x + CELL_SIZE[0], 0.5 + start.y + CELL_SIZE[1]);
+    
+                // cross
+                context.moveTo(start.x + c.cx - CROSS_SIZE[0], start.y + c.cy - CROSS_SIZE[1]);
+                context.lineTo(start.x + c.cx + CROSS_SIZE[0], start.y + c.cy + CROSS_SIZE[1]);
+                context.moveTo(start.x + c.cx - CROSS_SIZE[0], start.y + c.cy + CROSS_SIZE[1]);
+                context.lineTo(start.x + c.cx + CROSS_SIZE[0], start.y + c.cy - CROSS_SIZE[1]);
+                context.stroke();
+    
+                // value
+                context.fillStyle = '#000';
+                context.fillText(c.v, start.x + c.cx, start.y + c.cy - 5);
+            }
+    
+            var debugCanvas = detailedHeatmap.get('acanvas');
+            document.getElementById(grayscaleCanvas).appendChild(debugCanvas);
+    
+            var undetailedHeatmap = h337.create({
+                element: document.getElementById(undetailedCanvas),
+                gradient: gradient,
+                opacity: opacity,
+                radius: radius,
+                blurRadius: blurRadius
+            });
+            undetailedHeatmap.store.setDataSet(data);
+        }
+        
+        var canvas = document.getElementById("circleBlur");
+        canvas.style.display="none"
+       
+        
+    
+    };
+    </script>
+    
+    
+     
+    
+</body>
+</html>

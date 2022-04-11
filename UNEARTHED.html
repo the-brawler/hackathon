@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <style>img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 40%;
+  }
+  h1{
+    color: white;
+    font-family:Didot ;
+    font-size :300%;
+text-align:center;
+ }
+ label h4 {
+  color: white;
+ }
+ 
+a h3{text-align:center;
+        color: white;      
+        }
+a h2{text-align:center; color: white;}
+a h3{text-align:center; color: white;}
+a h2{text-align:center; color: white;}
+img {
+   max-width: 300px;
+}
+
+  
+}
+  </style>
+  <script language = "javascript"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=>, initial-scale=1.0">
+    <title>Document</title>
+  </script>
+
+</head>
+
+<body style= "background:url(https://www.innovationnewsnetwork.com/wp-content/uploads/2020/01/Agricultural-technologies-leading-image.jpg)">
+
+  
+<script src=""></script>
+<link rel="stylesheet" href="style.css">
+  <h1><u>UNEARTHED</u></h1> 
+  <form>
+    <select name ="crop type">
+      <option value="single crop "> single crop</option>
+      <option value="multicrop">multicrop </option>
+      
+    </select>
+  </form>
+  <br>
+  <form>
+    <select name ="crop type">
+      <option value="wheat"> wheat</option>
+      <option value="rice">rice </option>
+      <option value="soybean">soybean </option>
+      <option value="grapes"> grapes</option>
+      <option value="jute"> jute</option>
+    </select>
+  </form>
+  <br>
+  <h4>Upload drone images of agricultural field</h4>
+  <form>
+    <input type="file" id="upload drone image of agricultural fields">
+    
+    </form>
+    <button onclick="my()">
+      Submit Picture
+    </button>
+    <br>
+ 
+<img src ="ph.jpg" width="350" >
+<br>
+<a href="ph.html"><h3>pH LEVEL</h3></a>
+<br>
+ 
+<img src="water.jpg "  width="350">
+<br>
+<a href="WATER.html"><h2>MOISTURE LEVEL</h2></a>
+<br>
+<img src="temp.jpg "  width="350">
+<br>
+<a href="temp.html"><h2>TEMPERATURE</h2></a>
+<br>
+
+ 
+ 
+
+
+<img id="imagePreview">
+ 
+ <script language="javascript">
+   function getBase64Image(img) {
+    var canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
+
+    var ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+
+    var dataURL = canvas.toDataURL("image/png");
+
+    return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+}
+
+document.getElementById("uploadImage").addEventListener("change", function() {
+  if (document.getElementById('uploadImage').files && document.getElementById('uploadImage').files[0]) {
+    var reader = new FileReader();
+
+    reader.onload = function(e) {
+      $('#imagePreview').attr('src', e.target.result);
+    }
+
+    reader.readAsDataURL(document.getElementById('uploadImage').files[0]); // convert to base64 string
+  }
+});
+
+$("#imgInp").change(function() {
+  readURL(this);
+});
+
+function my() {
+   bannerImage = document.getElementById('imagePreview');
+   imgData = getBase64Image(bannerImage);
+   localStorage.setItem("imgData", imgData);
+}function getBase64Image(img) {
+    var canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
+
+    var ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+
+    var dataURL = canvas.toDataURL("image/png");
+
+    return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+}
+
+document.getElementById("uploadImage").addEventListener("change", function() {
+  if (document.getElementById('uploadImage').files && document.getElementById('uploadImage').files[0]) {
+    var reader = new FileReader();
+
+    reader.onload = function(e) {
+      $('#imagePreview').attr('src', e.target.result);
+    }
+
+    reader.readAsDataURL(document.getElementById('uploadImage').files[0]); // convert to base64 string
+  }
+});
+
+$("#imgInp").change(function() {
+  readURL(this);
+});
+
+function my() {
+   bannerImage = document.getElementById('imagePreview');
+   imgData = getBase64Image(bannerImage);
+   localStorage.setItem("imgData", imgData);
+}
+ </script>
+ 
+</body>
+</html>
